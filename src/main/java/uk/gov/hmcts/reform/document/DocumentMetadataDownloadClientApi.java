@@ -29,6 +29,15 @@ public interface DocumentMetadataDownloadClientApi {
         @PathVariable("document_metadata_uri") String documentMetadataUri
     );
 
+    @RequestMapping(method = RequestMethod.GET, value = "{document_metadata_uri}")
+    Document getDocumentMetadata(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
+        @RequestHeader("ServiceAuthorization") String serviceAuth,
+        @RequestHeader("user-roles") String userRoles,
+        @RequestHeader("user-id") String userId,
+        @PathVariable("document_metadata_uri") String documentMetadataUri
+    );
+
 
     @RequestMapping(
         method = RequestMethod.GET,

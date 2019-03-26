@@ -19,4 +19,13 @@ public interface DocumentDownloadClientApi {
         @RequestHeader("user-roles") String userRoles,
         @PathVariable("document_download_uri") String documentDownloadUri
     );
+
+    @RequestMapping(method = RequestMethod.GET, value = "{document_download_uri}")
+    ResponseEntity<Resource> downloadBinary(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
+        @RequestHeader("ServiceAuthorization") String serviceAuth,
+        @RequestHeader("user-roles") String userRoles,
+        @RequestHeader("user-id") String userId,
+        @PathVariable("document_download_uri") String documentDownloadUri
+    );
 }

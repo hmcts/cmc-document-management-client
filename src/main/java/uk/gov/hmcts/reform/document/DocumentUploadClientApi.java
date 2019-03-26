@@ -32,6 +32,7 @@ public class DocumentUploadClientApi {
     private static final String DOCUMENTS_PATH = "/documents";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     public static final String USER_ID = "user-id";
+    public static final String USER_ROLES = "user-roles";
     private final String dmUri;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -51,12 +52,13 @@ public class DocumentUploadClientApi {
         @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
         @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
         @RequestHeader(USER_ID) String userId,
-        @RequestPart List<MultipartFile> files
+        @RequestPart List<MultipartFile> files,
+        @RequestHeader("user-roles") String userRoles
     ) {
         try {
             MultiValueMap<String, Object> parameters = prepareRequest(files);
 
-            HttpHeaders httpHeaders = setHttpHeaders(authorisation, serviceAuth, userId);
+            HttpHeaders httpHeaders = setHttpHeaders(authorisation, serviceAuth, userId, userRoles);
 
             HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(
                 parameters, httpHeaders
@@ -69,11 +71,15 @@ public class DocumentUploadClientApi {
         }
     }
 
-    private HttpHeaders setHttpHeaders(String authorizationToken, String serviceAuth, String userId) {
+    private HttpHeaders setHttpHeaders(String authorizationToken,
+                                       String serviceAuth,
+                                       String userId,
+                                       String userRoles) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, authorizationToken);
         headers.add(SERVICE_AUTHORIZATION, serviceAuth);
         headers.add(USER_ID, userId);
+        headers.add(USER_ROLES, userRoles);
 
         headers.set(HttpHeaders.CONTENT_TYPE, MULTIPART_FORM_DATA_VALUE);
 
